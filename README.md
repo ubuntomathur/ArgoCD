@@ -20,4 +20,4 @@ Pull based -- automatically tool argocd -continoulsy pull from the changes done 
 Push Based --- you pushed the changes in the git repo then trigger the desired changes in the infra and application
 
 
-
+![Image Alt](https://github.com/ubuntomathur/ArgoCD/blob/main/argocd_architecture.webp)
