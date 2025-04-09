@@ -1102,4 +1102,189 @@ statefulset.apps/argocd-application-controller   1/1     96s
 rm: remove regular file 'argocd-linux-amd64'? y
 [root@masterbm ~]#
 
+HOW TO Login in argocd
+
+[root@masterbm ~]# argocd admin  initial-password -n argocd
+n7V0CabdjgIRu31T
+
+ This password must be only used for first time login. We strongly recommend you update the password using `argocd account update-password`.
+[root@masterbm ~]#
+
+
+
+
+## Accessing Argo CD Services
+
+```bash
+kubectl get svc -n argocd
+
+[root@masterbm ~]# kubectl get svc -n argocd
+NAME                                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+argocd-applicationset-controller          ClusterIP   10.98.216.163    <none>        7000/TCP,8080/TCP            56m
+argocd-dex-server                         ClusterIP   10.102.98.54     <none>        5556/TCP,5557/TCP,5558/TCP   56m
+argocd-metrics                            ClusterIP   10.96.252.241    <none>        8082/TCP                     56m
+argocd-notifications-controller-metrics   ClusterIP   10.111.176.60    <none>        9001/TCP                     56m
+argocd-redis                              ClusterIP   10.101.4.39      <none>        6379/TCP                     56m
+argocd-repo-server                        ClusterIP   10.101.53.155    <none>        8081/TCP,8084/TCP            56m
+argocd-server                             ClusterIP   10.110.80.4      <none>        80/TCP,443/TCP               56m
+argocd-server-metrics                     ClusterIP   10.104.237.222   <none>        8083/TCP                     56m
+[root@masterbm ~]#
+
+kubectl port-forward svc/argocd-server 8080:443 -n argocd
+kubectl port-forward --address 0.0.0.0 svc/argocd-server 8080:443 -n argocd
+```
+
+
+Port forward 
+
+kubectl port-forward service/nameoftheservice local_port:target_port  
+kubectl port-forward pod/nameofthepod local_port:target_port  
+
+argocd-server                             ClusterIP   10.110.80.4      <none>        80/TCP,443/TCP   
+
+kubectl port-forward service/argocd-server   :target_port        
+
+[root@masterbm ~]# kubectl port-forward svc/argocd-server 8080:443 -n argocd
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+E0409 17:52:39.087410   93573 portforward.go:385] "Unhandled Error" err="error copying from remote stream to local connection: readfrom tcp6 [::1]:8080->[::1]:46358: write tcp6 [::1]:8080->[::1]:46358: write: broken pipe"
+Handling connection for 8080
+
+
+
+[root@masterbm ~]# argocd login localhost:8080
+WARNING: server certificate had error: tls: failed to verify certificate: x509:                                                                        certificate signed by unknown authority. Proceed insecurely (y/n)? y
+Username: admin
+Password:
+'admin:login' logged in successfully
+Context 'localhost:8080' updated
+[root@masterbm ~]#
+
+
+logout
+[root@masterbm ~]# argocd logout  localhost:8080
+Logged out from 'localhost:8080'
+[root@masterbm ~]#
+
+cancel port forwarding 
+[root@masterbm ~]# kubectl port-forward svc/argocd-server 8080:443 -n argocd
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+E0409 17:52:39.087410   93573 portforward.go:385] "Unhandled Error" err="error copying from remote stream to local connection: readfrom tcp6 [::1]:8080->[::1]:46358: write tcp6 [::1]:8080->[::1]:46358: write: broken pipe"
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+^C[root@masterbm ~]#
+[root@masterbm ~]# argocd login localhost:8080
+FATA[0000] dial tcp [::1]:8080: connect: connection refused
+[root@masterbm ~]#
+
+do curl try to open the url not openning 
+
+^C[root@masterbm ~]# kubectport-forward svc/argocd-server 8080:44343 -n argocd
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+Handling connection for 8080
+
+[root@masterbm ~]# curl  localhost:8080
+<a href="https://localhost:8080/">Temporary Redirect</a>.
+
+
+Another attempt to open argocd in web
+
+^C[root@masterbm ~]kubectl port-forward --address 0.0.0.0 svc/argocd-server 8080:443 -n argocdcd
+Forwarding from 0.0.0.0:8080 -> 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+E0409 18:05:07.224530  101016 portforward.go:398] "Unhandled Error" err="error copying from local connection to remote stream: writeto tcp4 192.168.29.150:8080->192.168.29.23:40566: read tcp4 192.168.29.150:8080->192.168.29.23:40566: read: connection reset by peer"
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+
+root@masterbm ~]# curl  localhost:8080
+<a href="https://localhost:8080/">Temporary Redirect</a>.
+
+[root@masterbm ~]# ip -br a
+lo               UNKNOWN        127.0.0.1/8 ::1/128
+enp1s0           UP             192.168.29.150/24
+cali1f3a91feb4d@if2 UP             fe80::ecee:eeff:feee:eeee/64
+cali91dc23635c3@if2 UP             fe80::ecee:eeff:feee:eeee/64
+cali0860c8522bc@if2 UP             fe80::ecee:eeff:feee:eeee/64
+tunl0@NONE       UNKNOWN        172.16.149.128/32
+[root@masterbm ~]#
+
+
+[root@masterbm ~]# curl -v  -k  https://192.168.29.150:8080
+*   Trying 192.168.29.150:8080...
+* Connected to 192.168.29.150 (192.168.29.150) port 8080 (#0)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+*  CAfile: /etc/pki/tls/certs/ca-bundle.crt
+* TLSv1.0 (OUT), TLS header, Certificate Status (22):
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.2 (IN), TLS header, Finished (20):
+* TLSv1.2 (IN), TLS header, Unknown (23):
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+* TLSv1.2 (IN), TLS header, Unknown (23):
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+* TLSv1.2 (IN), TLS header, Unknown (23):
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+* TLSv1.2 (IN), TLS header, Unknown (23):
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+* TLSv1.2 (OUT), TLS header, Finished (20):
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.2 (OUT), TLS header, Unknown (23):
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / TLS_AES_128_GCM_SHA256
+* ALPN, server accepted to use http/1.1
+* Server certificate:
+*  subject: O=Argo CD
+*  start date: Apr  9 10:43:51 2025 GMT
+*  expire date: Apr  9 10:43:51 2026 GMT
+*  issuer: O=Argo CD
+*  SSL certificate verify result: self-signed certificate (18), continuing anyway.
+* TLSv1.2 (OUT), TLS header, Unknown (23):
+> GET / HTTP/1.1
+> Host: 192.168.29.150:8080
+> User-Agent: curl/7.76.1
+> Accept: */*
+>
+* TLSv1.2 (IN), TLS header, Unknown (23):
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+* TLSv1.2 (IN), TLS header, Unknown (23):
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Accept-Ranges: bytes
+< Content-Length: 788
+< Content-Security-Policy: frame-ancestors 'self';
+< Content-Type: text/html; charset=utf-8
+< Vary: Accept-Encoding
+< X-Frame-Options: sameorigin
+< X-Xss-Protection: 1
+< Date: Wed, 09 Apr 2025 12:36:52 GMT
+<
+* Connection #0 to host 192.168.29.150 left intact
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><title>Argo CD</title><base href="/"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="assets/favicon/favicon-32x32.png" sizes="32x32"/><link rel="icon" type="image/png" href="assets/favicon/favicon-16x16.png" sizes="16x16"/><link href="assets/fonts.css" rel="stylesheet"><script defer="defer" src="main.67d3d35d60308e91d5f4.js"></script></head><body><noscript><p>Your browser does not support JavaScript. Please enable JavaScript to view the site. Alternatively, Argo CD can be used with the <a href="https://argoproj.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.</p></noscript><div id="app"></div></body><script defer="defer" src="extensions.js"></script></html>[root@masterbm ~]#
+
+
+
+
+
+
+
+ 
 
