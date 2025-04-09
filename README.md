@@ -7,7 +7,7 @@ and ensure your enviroment match the desired state.
 #AgroCD#, it is a declarative ,gitops continous delivery tool for kubernetes, it provides automated deplyoment + Easy rollout + multicluster support+ visualization
 Declarative means- manifest 
 
-it is an automated tool when it always check that your desired state must be sync with a desired state.
+it is an automated tool when it always check that your current  state must be sync with a desired state.
 
 #################current state= desired state ####################
 
