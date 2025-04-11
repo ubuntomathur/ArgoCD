@@ -160,7 +160,7 @@ Internal Traffic Policy:  Cluster
 Events:                   <none>
 [root@masterbm ~]#
 ```
-```
+
 
 [root@masterbm ~]# ip -br a
 lo               UNKNOWN        127.0.0.1/8 ::1/128
@@ -176,4 +176,4 @@ tunl0@NONE       UNKNOWN        172.16.149.128/32
 ![Image Alt](https://github.com/ubuntomathur/ArgoCD/blob/main/argocd.jpg)
 
 
-```
+
