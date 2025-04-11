@@ -1140,6 +1140,7 @@ Port forward
 kubectl port-forward service/nameoftheservice local_port:target_port  
 kubectl port-forward pod/nameofthepod local_port:target_port  
 
+
 argocd-server                             ClusterIP   10.110.80.4      <none>        80/TCP,443/TCP   
 
 kubectl port-forward service/argocd-server   :target_port        
