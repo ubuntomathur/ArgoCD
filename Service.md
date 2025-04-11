@@ -184,3 +184,83 @@ n7V0CabdjgIRu31T
 
 now you can login admin/n7V0CabdjgIRu31T
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+[root@masterbm ~]#  argocd admin initial-password -n argocd
+n7V0CabdjgIRu31T
+
+ This password must be only used for first time login. We strongly recommend you update the password using `argocd account update-password`.
+[root@masterbm ~]# ip -br a
+lo               UNKNOWN        127.0.0.1/8 ::1/128
+enp1s0           UP             192.168.29.150/24
+cali1f3a91feb4d@if2 UP             fe80::ecee:eeff:feee:eeee/64
+cali0860c8522bc@if2 UP             fe80::ecee:eeff:feee:eeee/64
+cali91dc23635c3@if2 UP             fe80::ecee:eeff:feee:eeee/64
+tunl0@NONE       UNKNOWN        172.16.149.128/32
+[root@masterbm ~]# kubectl get svc -n agrocd
+No resources found in agrocd namespace.
+[root@masterbm ~]# kubectl get svc -n argocd
+NAME                                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+argocd-applicationset-controller          ClusterIP   10.98.216.163    <none>        7000/TCP,8080/TCP            2d2h
+argocd-dex-server                         ClusterIP   10.102.98.54     <none>        5556/TCP,5557/TCP,5558/TCP   2d2h
+argocd-metrics                            ClusterIP   10.96.252.241    <none>        8082/TCP                     2d2h
+argocd-notifications-controller-metrics   ClusterIP   10.111.176.60    <none>        9001/TCP                     2d2h
+argocd-redis                              ClusterIP   10.101.4.39      <none>        6379/TCP                     2d2h
+argocd-repo-server                        ClusterIP   10.101.53.155    <none>        8081/TCP,8084/TCP            2d2h
+argocd-server                             NodePort    10.110.80.4      <none>        80:32598/TCP,443:32193/TCP   2d2h
+argocd-server-metrics                     ClusterIP   10.104.237.222   <none>        8083/TCP                     2d2h
+[root@masterbm ~]# argocd login  192.168.29.15:32598
+FATA[0006] dial tcp 192.168.29.15:32598: connect: no route to host
+[root@masterbm ~]# kubectl describe svc argocd-server -n argocd
+Name:                     argocd-server
+Namespace:                argocd
+Labels:                   app.kubernetes.io/component=server
+                          app.kubernetes.io/name=argocd-server
+                          app.kubernetes.io/part-of=argocd
+Annotations:              <none>
+Selector:                 app.kubernetes.io/name=argocd-server
+Type:                     NodePort
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.110.80.4
+IPs:                      10.110.80.4
+Port:                     http  80/TCP
+TargetPort:               8080/TCP
+NodePort:                 http  32598/TCP
+Endpoints:                172.16.169.72:8080
+Port:                     https  443/TCP
+TargetPort:               8080/TCP
+NodePort:                 https  32193/TCP
+Endpoints:                172.16.169.72:8080
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Internal Traffic Policy:  Cluster
+Events:                   <none>
+[root@masterbm ~]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+[root@masterbm ~]# admin login localhost:32598
+-bash: admin: command not found
+[root@masterbm ~]# argocd  login localhost:32598
+WARNING: server certificate had error: tls: failed to verify certificate: x509: certificate signed by unknown authority. Proceed insecurely (y/n)? y
+Username: admin
+Password:
+'admin:login' logged in successfully
+Context 'localhost:32598' updated
+[root@masterbm ~]#
+```
