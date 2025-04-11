@@ -1102,7 +1102,7 @@ statefulset.apps/argocd-application-controller   1/1     96s
 rm: remove regular file 'argocd-linux-amd64'? y
 [root@masterbm ~]#
 
-HOW TO Login in argocd
+#HOW TO Login in argocd
 
 [root@masterbm ~]# argocd admin  initial-password -n argocd
 n7V0CabdjgIRu31T
