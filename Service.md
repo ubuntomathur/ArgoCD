@@ -170,10 +170,17 @@ cali0860c8522bc@if2 UP             fe80::ecee:eeff:feee:eeee/64
 cali91dc23635c3@if2 UP             fe80::ecee:eeff:feee:eeee/64
 tunl0@NONE       UNKNOWN        172.16.149.128/32
 [root@masterbm ~]#
+[root@masterbm ~]# argocd admin initial-password -n argocd
+n7V0CabdjgIRu31T
+
+ This password must be only used for first time login. We strongly recommend you update the password using `argocd account update-password`.
+[root@masterbm ~]#
+
+
 ```
 
 
 ![Image Alt](https://github.com/ubuntomathur/ArgoCD/blob/main/argocd.jpg)
 
-
+now you can login admin/n7V0CabdjgIRu31T
 
