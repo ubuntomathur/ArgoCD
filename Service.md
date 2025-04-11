@@ -1,5 +1,5 @@
 ```
-**Manually Editing the Service: Alternatively, you can manually edit the service with the following command, which will open the service definition in an editor**
+**Manually Editing the Service: Alternatively, you can manually edit the service with the following command, which will open the service definition in an editor**"
 
 [root@masterbm ~]# kubectl get all -n argocd
 NAME                                                   READY   STATUS    RESTARTS        AGE
